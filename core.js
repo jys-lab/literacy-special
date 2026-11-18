@@ -9,6 +9,7 @@
   var WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   var RECOMMENDED_SESSIONS = { 4: 18, 6: 27 };
   var MAX_CLASSES = 6;
+  var MAX_WEEKS = 20;
 
   /* 입력 예시(원장님 공지용). 학원명·연락처·금액은 모두 가상 값 */
   var SAMPLE = {
@@ -71,7 +72,7 @@
       n: str(raw.n, 40),
       t: str(raw.t, 25),
       a: safeUrl(raw.a),
-      w: [4, 6, 8].indexOf(raw.w) !== -1 ? raw.w : 0,
+      w: Number.isInteger(raw.w) && raw.w >= 1 && raw.w <= MAX_WEEKS ? raw.w : 0,
       c: 0,
       s: validDate(raw.s),
       e: validDate(raw.e),
@@ -81,7 +82,6 @@
       m: str(raw.m, 30)
     };
     if (!phoneNumber(d.t)) d.t = '';
-    if ((d.w === 4 || d.w === 6) && Number.isInteger(raw.c) && raw.c > 0 && raw.c < 100) d.c = raw.c;
     if (d.s && d.e && d.e < d.s) { d.s = ''; d.e = ''; }
     if (Number.isInteger(raw.f) && raw.f > 0 && raw.f < 100000000) d.f = raw.f;
     /* 한 줄 = 한 반. 같은 학년이 여러 반에 들어갈 수 있음 */
@@ -167,9 +167,8 @@
   }
 
   function sessionsText(d) {
-    if (d.w === 8) return '새 학년 1학기 전반부 36회차 완주 목표';
-    if ((d.w === 4 || d.w === 6) && d.c) return d.w + '주 동안 ' + d.c + '회차 학습';
-    return '';
+    /* 36회차는 8주 과정에서만 표시 (학습 회차 입력은 없앰) */
+    return d.w === 8 ? '새 학년 1학기 전반부 36회차 완주 목표' : '';
   }
 
   /* 표시할 반: 학년 + (요일 또는 시간). 낮은 학년 반부터, 같은 학년은 입력 순서대로 */
@@ -191,7 +190,7 @@
 
   window.ILJWI = {
     GRADES: GRADES, DAYS: DAYS, SAMPLE: SAMPLE, RECOMMENDED_SESSIONS: RECOMMENDED_SESSIONS,
-    MAX_CLASSES: MAX_CLASSES, perWeekText: perWeekText,
+    MAX_CLASSES: MAX_CLASSES, MAX_WEEKS: MAX_WEEKS, perWeekText: perWeekText,
     phoneNumber: phoneNumber, safeUrl: safeUrl, sanitize: sanitize,
     encode: encode, decode: decode,
     periodText: periodText, gradeText: gradeText, dayText: dayText, timeText: timeText,

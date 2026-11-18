@@ -28,34 +28,46 @@
     var title = document.createElement('span');
     top.appendChild(title);
     var del = document.createElement('button');
-    del.type = 'button'; del.className = 'btn-text'; del.textContent = '이 줄 지우기';
+    del.type = 'button'; del.className = 'btn-text'; del.textContent = '이 반 지우기';
     del.addEventListener('click', function () { row.remove(); renumber(); update(); });
     top.appendChild(del);
     row.appendChild(top);
 
-    var nl = document.createElement('div'); nl.className = 'sub'; nl.textContent = '반 이름 (선택)'; row.appendChild(nl);
+    /* 고정 문구만 넣는 꼬리표 */
+    function subLabel(text, cls, tag) {
+      var l = document.createElement('div'); l.className = 'sub';
+      l.innerHTML = text + ' <span class="tag ' + cls + '">' + tag + '</span>';
+      row.appendChild(l);
+    }
+    function note(html) {
+      var p = document.createElement('p'); p.className = 'empty-note'; p.innerHTML = html; row.appendChild(p);
+    }
+
+    subLabel('반 이름', 'opt', '선택');
     var nameIn = document.createElement('input');
     nameIn.type = 'text'; nameIn.className = 'cn'; nameIn.maxLength = 15;
-    nameIn.placeholder = '예: A반, 주 3일반';
+    nameIn.placeholder = '예: 저(고)학년 반, 주 3일 반';
     nameIn.setAttribute('aria-label', '반 이름');
     row.appendChild(nameIn);
+    note('<b>비워 두면</b> 학년과 \'주 N회\'만 표시됩니다.');
 
-    var gl = document.createElement('div'); gl.className = 'sub'; gl.textContent = '대상 학년'; row.appendChild(gl);
+    subLabel('대상 학년', 'cond', '반 표시 시 필수');
     var grades = document.createElement('div'); grades.className = 'seg g';
     K.GRADES.forEach(function (g) { grades.appendChild(chip('checkbox', 'g' + rowSeq, g, '예비 초' + g)); });
     row.appendChild(grades);
 
-    var dl = document.createElement('div'); dl.className = 'sub'; dl.textContent = '요일'; row.appendChild(dl);
+    subLabel('요일', 'cond', '요일·시간 중 하나 필수');
     var days = document.createElement('div'); days.className = 'seg d';
     K.DAYS.forEach(function (name, i) { days.appendChild(chip('checkbox', 'd' + rowSeq, i, name)); });
     row.appendChild(days);
 
-    var tl = document.createElement('div'); tl.className = 'sub'; tl.textContent = '시간'; row.appendChild(tl);
+    subLabel('시간', 'opt', '선택');
     var times = document.createElement('div'); times.className = 'row';
     var start = document.createElement('input'); start.type = 'time'; start.className = 'ts'; start.setAttribute('aria-label', '시작 시간');
     var end = document.createElement('input'); end.type = 'time'; end.className = 'te'; end.setAttribute('aria-label', '끝나는 시간');
     times.appendChild(start); times.appendChild(end);
     row.appendChild(times);
+    note('<b>시간을 비워 두면</b> 요일만 나옵니다. 끝나는 시간만 비우면 \'15:00 시작\'처럼 나옵니다.');
     var msg = document.createElement('p'); msg.className = 'msg warn'; row.appendChild(msg);
 
     if (data) {
@@ -91,15 +103,19 @@
   /* ---------- 입력 읽기 ---------- */
   function radio(name) { return Number(document.querySelector('input[name="' + name + '"]:checked').value); }
   function feeNumber() { return Number(($('f-fee').value || '').replace(/[^\d]/g, '')) || 0; }
+  function weeksEtc() { return document.querySelector('input[name="weeks"]:checked').value === 'etc'; }
+  function readWeeks() {
+    if (!weeksEtc()) return radio('weeks');
+    var n = Number($('f-weeks-etc').value);
+    return Number.isInteger(n) && n >= 1 && n <= K.MAX_WEEKS ? n : 0;
+  }
 
   function readForm() {
-    var w = radio('weeks');
     return {
       n: $('f-name').value,
       t: $('f-tel').value,
       a: $('f-apply').value,
-      w: w,
-      c: (w === 4 || w === 6) ? (parseInt($('f-sessions').value, 10) || 0) : 0,
+      w: readWeeks(),
       s: $('f-start').value,
       e: $('f-end').value,
       r: readRows(),
@@ -121,8 +137,14 @@
     var telBad = tel && !K.phoneNumber(tel);
     $('f-tel').classList.toggle('bad', !!telBad);
     if (telBad) setMsg('tel-msg', '전화번호를 확인해 주세요. 숫자와 하이픈(-)으로 입력합니다.', 'err');
-    else if (!tel && raw.n.trim()) setMsg('tel-msg', '전화번호를 넣으면 학부모 화면에 전화 상담 버튼이 생깁니다.', 'warn');
     else setMsg('tel-msg', '');
+
+    var etcVal = $('f-weeks-etc').value.trim();
+    var etcBad = weeksEtc() && etcVal !== '' && !readWeeks();
+    $('f-weeks-etc').classList.toggle('bad', etcBad);
+    if (etcBad) setMsg('weeks-msg', '1~' + K.MAX_WEEKS + ' 사이의 숫자로 넣어 주세요.', 'err');
+    else if (weeksEtc() && etcVal === '') setMsg('weeks-msg', '주차를 숫자로 넣어 주세요. 비워 두면 주차가 나오지 않습니다.', 'warn');
+    else setMsg('weeks-msg', '');
 
     var ap = raw.a.trim();
     var apBad = ap && !K.safeUrl(ap);
@@ -145,7 +167,7 @@
     if (!raw.f && raw.m.trim()) setMsg('fee-msg', '금액을 넣어야 비고도 함께 나옵니다.', 'warn');
     else setMsg('fee-msg', '');
 
-    return !telBad && !apBad && !(raw.s && raw.e && raw.e < raw.s);
+    return !telBad && !apBad && !etcBad && !(raw.s && raw.e && raw.e < raw.s);
   }
 
   /* ---------- 링크 만들기 ---------- */
@@ -159,8 +181,7 @@
   }
 
   function update() {
-    var w = radio('weeks');
-    $('sessions-box').hidden = !(w === 4 || w === 6);
+    $('weeks-etc-box').hidden = !weeksEtc();
     var raw = readForm();
     var ok = check(raw);
     var name = raw.n.trim();
@@ -178,12 +199,9 @@
     }, 350);
   }
 
-  /* 주차를 바꾸면 권장 회차 채우기 */
-  document.querySelectorAll('input[name="weeks"]').forEach(function (r) {
-    r.addEventListener('change', function () {
-      var rec = K.RECOMMENDED_SESSIONS[Number(r.value)];
-      if (rec) $('f-sessions').value = rec;
-    });
+  /* 기타를 고르면 입력 칸으로 */
+  document.querySelector('input[name="weeks"][value="etc"]').addEventListener('change', function () {
+    setTimeout(function () { $('f-weeks-etc').focus(); }, 0);
   });
 
   /* 금액에 쉼표 */
@@ -192,7 +210,7 @@
     $('f-fee').value = n ? n.toLocaleString('ko-KR') : '';
   });
 
-  ['f-name', 'f-tel', 'f-apply', 'f-sessions', 'f-start', 'f-end', 'f-fee', 'f-memo'].forEach(function (id) {
+  ['f-name', 'f-tel', 'f-apply', 'f-weeks-etc', 'f-start', 'f-end', 'f-fee', 'f-memo'].forEach(function (id) {
     $(id).addEventListener('input', update);
     $(id).addEventListener('change', update);
   });
@@ -233,8 +251,9 @@
     $('f-name').value = d.n;
     $('f-tel').value = d.t;
     $('f-apply').value = d.a;
-    document.querySelector('input[name="weeks"][value="' + d.w + '"]').checked = true;
-    $('f-sessions').value = d.c || (K.RECOMMENDED_SESSIONS[d.w] || '');
+    var preset = [0, 4, 6, 8].indexOf(d.w) !== -1;
+    document.querySelector('input[name="weeks"][value="' + (preset ? d.w : 'etc') + '"]').checked = true;
+    $('f-weeks-etc').value = preset ? '' : d.w;
     $('f-start').value = d.s;
     $('f-end').value = d.e;
     rowsBox.innerHTML = '';
