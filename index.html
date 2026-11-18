@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>일취월장 문해력 특강</title>
+<meta name="description" content="겨울방학, 어떤 계획을 세우고 계신가요? 교과 독파 · 완독 습관 · 글쓰기 기초 · 예비 초3~초6">
+<meta property="og:type" content="website">
+<meta property="og:title" content="일취월장 문해력 특강">
+<meta property="og:description" content="겨울방학, 어떤 계획을 세우고 계신가요? 교과 독파 · 완독 습관 · 글쓰기 기초 · 예비 초3~초6">
+<meta property="og:url" content="https://jys-lab.github.io/literacy-special/">
+<meta property="og:image" content="https://jys-lab.github.io/literacy-special/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8742a'/%3E%3Cpath d='M18 46V18h6v22h12v6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="demo-bar" id="demo-bar" hidden>예시 화면입니다 · 학원 정보는 가상입니다</div>
+<div class="acad-band" id="acad-band" hidden><span id="band-name"></span> 겨울방학 특강 안내</div>
+
+<main class="wrap">
+  <!-- 1. 첫 화면 -->
+  <section class="hero">
+    <span class="eyebrow">겨울방학 · 예비 초3~초6</span>
+    <p class="hook">겨울방학,<br>어떤 계획을 세우고 계신가요?</p>
+    <h1>일취월장<br>문해력 특강</h1>
+    <p class="lead">교과는 미리, 책은 끝까지,<br>글은 다시 한 번!</p>
+    <div class="hero-art" id="hero-art">
+      <img src="img/hero.jpg" alt="겨울방학에 책상에서 책을 읽고 글을 쓰는 아이" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='첫 화면 그림 자리 (ChatGPT 그림 I-1 · 1080×810)';">
+    </div>
+    <p class="goals-title">일취월장 문해력 특강의<br><em>목표 3!</em></p>
+    <ol class="goals">
+      <li><b>교과 독파</b><span>새 학년 국어·사회·과학 1학기 전반부, 미리 읽고 시작!</span></li>
+      <li><b>완독 습관</b><span>매주 1권 이상, 끝까지 읽는 힘!</span></li>
+      <li><b>글쓰기 기초</b><span>피드백 받고 다시 쓰며 생각을 글로!</span></li>
+    </ol>
+    <div class="cta" id="hero-cta" hidden></div>
+  </section>
+
+  <!-- 2. 우리 학원 특강 일정 (학원 입력) -->
+  <section class="schedule" id="schedule" hidden aria-labelledby="sch-title">
+    <p class="label">우리 학원 특강 일정</p>
+    <h2 id="sch-title"></h2>
+    <dl class="info" id="sch-info"></dl>
+    <table class="times" id="sch-times" hidden>
+      <thead><tr><th>학년</th><th>요일</th><th>시간</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="note">자세한 내용은 학원에 문의해 주세요.</p>
+  </section>
+
+  <!-- 3. 매일국어 -->
+  <section class="block" aria-labelledby="mk-title">
+    <p class="label">목표 1 · 교과 독파</p>
+    <h2 id="mk-title">새 학년 국어·사회·과학<br>1학기 전반부 독파!</h2>
+    <p>새 학기 교과서 글, 방학에 먼저 읽어 두세요. 낯선 교과 어휘와 개념을 미리 만나 두면 새 학기 수업을 따라가기가 한결 수월해집니다.</p>
+    <div class="chips"><span>주 5회 학습</span><span class="hl" id="mk-goal" hidden></span></div>
+    <ol class="steps">
+      <li><span class="num">1</span><b>교과 어휘가 낯설지 않아요</b><span>국어·사회·과학에 나오는 개념어의 뜻과 쓰임을 미리 익혀, 수업에서 처음 듣는 말이 줄어듭니다.</span></li>
+      <li><span class="num">2</span><b>핵심을 찾는 눈이 생겨요</b><span>문단마다 중심 문장을 찾는 연습으로, 긴 교과 글에서도 무엇이 중요한지 가려 읽습니다.</span></li>
+      <li><span class="num">3</span><b>요약하며 내 것으로 만들어요</b><span>읽은 내용을 간추려 정리하면서, 무엇을 이해했는지 스스로 확인합니다.</span></li>
+    </ol>
+    <div class="carousel-wrap">
+    <button type="button" class="nav prev" aria-label="이전 화면">‹</button>
+    <button type="button" class="nav next" aria-label="다음 화면">›</button>
+    <div class="carousel" id="carousel" aria-label="교과 독해 학습 화면">
+      <figure><button type="button" class="shot"><img src="img/mk-vocab.jpg" alt="낱말의 뜻과 한자어, 예문을 보여 주는 어휘 학습 화면" loading="lazy"></button><figcaption>① 교과 어휘 익히기</figcaption></figure>
+      <figure><button type="button" class="shot"><img src="img/mk-core.jpg" alt="지문의 중심 문장에 형광펜이 칠해진 화면" loading="lazy"></button><figcaption>② 글의 핵심 찾기</figcaption></figure>
+      <figure><button type="button" class="shot"><img src="img/mk-summary.jpg" alt="글의 내용을 간추린 핵심 노트 화면" loading="lazy"></button><figcaption>③ 요약하기</figcaption></figure>
+    </div>
+    </div>
+    <div class="dots" id="dots" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+    <p class="swipe">온라인 교과 독해 프로그램 화면 · 화살표나 손가락으로 넘겨 보세요</p>
+  </section>
+
+  <!-- 4. 책글섬 독도 -->
+  <section class="block" aria-labelledby="dd-title">
+    <p class="label">목표 2·3 · 완독 습관 · 글쓰기 기초</p>
+    <h2 id="dd-title">끝까지 읽고,<br>생각을 글로 쓴다!</h2>
+    <p>읽는 습관과 쓰는 힘, 이번 겨울에 함께 키웁니다.</p>
+    <div class="goal-cards">
+      <div class="goal-card">
+        <p class="goal-what">주 1권 이상 완독</p>
+        <p class="goal-to">→ 독서 습관 형성</p>
+        <p>수준에 맞는 책을 골라 매주 1권 이상 끝까지 읽습니다. 매주 완독을 이어 가며 방학 동안 책 읽는 습관을 만듭니다.</p>
+      </div>
+      <div class="goal-card">
+        <p class="goal-what">다양한 독후 활동 훈련</p>
+        <p class="goal-to">→ 글쓰기 기초 · 깊이 있는 사고력</p>
+        <p>읽은 책으로 독후감을 쓰고, 선생님 피드백을 받아 다시 씁니다. 완성한 글은 독서로에 기록합니다. 내 생각을 근거와 함께 쓰는 연습으로 글쓰기 기초를 다지고 깊이 생각하는 힘을 기릅니다.</p>
+      </div>
+    </div>
+    <div class="sub-card">
+      <h3>완성한 독후감은 독서로에 기록</h3>
+      <p>독서로는 교육부와 한국교육학술정보원이 운영하는 학생 독서교육 플랫폼입니다. 완성한 독후감을 버튼으로 옮겨 기록할 수 있습니다.</p>
+      <p class="note">독서로 기록을 학교생활기록부와 연동하는 방안은 교육부가 추진하고 있습니다.</p>
+    </div>
+    <figure><button type="button" class="shot"><img src="img/dd-dokseoro.jpg" alt="온라인 독후감 화면 아래의 글 복사, 독서로 이동 버튼" loading="lazy"></button><figcaption>온라인 독서 프로그램의 독후감 화면 · [독서로 이동] 버튼</figcaption></figure>
+  </section>
+
+  <!-- 5. 독후감 수정 전후 -->
+  <section class="block" aria-labelledby="es-title">
+    <p class="label">독후감 · 피드백 받고 다시 쓰기</p>
+    <h2 id="es-title">피드백 한 번,<br>글이 이렇게 달라집니다!</h2>
+    <p>혼자 쓴 글에 선생님이 예시를 들어 구체적으로 피드백하고, 아이는 그 피드백을 반영해 다시 씁니다. 최종 피드백까지 받은 글은 독서로에 저장합니다.</p>
+    <ol class="flow" aria-label="독후감 진행 순서">
+      <li>스스로 쓰기</li><li>선생님 피드백</li><li>다시 쓰기</li><li>최종 피드백</li><li>독서로에 저장</li>
+    </ol>
+    <div class="tabs" role="tablist" aria-label="독후감 예시 단계">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="essay" data-step="0">① 스스로<br>쓴 글</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="essay" data-step="1">② 선생님<br>피드백</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="essay" data-step="2">③ 피드백 반영<br>다시 쓴 글</button>
+    </div>
+    <div class="essay" id="essay" role="tabpanel" aria-live="polite"></div>
+    <figure><button type="button" class="shot"><img src="img/dd-compare.jpg" alt="1차 작성글과 2차 작성글을 나란히 보여 주는 화면" loading="lazy"></button><figcaption>실제 화면에서는 1차 글과 2차 글을 나란히 놓고 비교합니다.</figcaption></figure>
+  </section>
+
+  <!-- 6. 독후감 평가 보고서 -->
+  <section class="block" aria-labelledby="rp-title">
+    <p class="label">독후감 평가 보고서</p>
+    <h2 id="rp-title">우리 아이 글쓰기,<br>강점과 키울 점이 한눈에!</h2>
+    <p>선생님이 아이의 독후감을 평가해 보고서로 정리해 드립니다. 다섯 영역의 성취도와 영역마다 남긴 선생님 총평으로, 아이가 무엇을 잘하고 무엇을 더 키우면 좋을지 확인할 수 있습니다.</p>
+    <div class="areas"><span>내용 요약</span><span>감상과 깨달음</span><span>발상과 독창성</span><span>구성과 조직력</span><span>표현력</span></div>
+    <figure><button type="button" class="shot"><img src="img/report-score.jpg" alt="1차 점수와 AI·선생님 평가 총점이 나온 보고서" loading="lazy"></button><figcaption>1차 점수와 평가 주체별 점수</figcaption></figure>
+    <figure><button type="button" class="shot"><img src="img/report-chart.jpg" alt="다섯 영역 성취도를 보여 주는 오각형 차트와 표" loading="lazy"></button><figcaption>다섯 영역 성취도 · 체험 계정으로 만든 보고서입니다</figcaption></figure>
+    <p class="note">보고서는 아이가 처음 스스로 쓴 글(1차)을 기준으로 만들어집니다.</p>
+  </section>
+
+  <!-- 목표 요약 -->
+  <section class="summary" aria-labelledby="sum-title">
+    <h2 id="sum-title">이번 겨울방학<span id="sum-weeks"></span>,<br>목표는 딱 3가지!</h2>
+    <ul>
+      <li><b>교과 독파</b> 새 학년 국어·사회·과학 1학기 전반부</li>
+      <li><b>완독 습관</b> 매주 1권 이상 끝까지</li>
+      <li><b>글쓰기 기초</b> 피드백 받고 다시 쓰기</li>
+    </ul>
+  </section>
+
+  <!-- 7. 문의·신청 -->
+  <section class="contact" aria-labelledby="ct-title">
+    <p class="label">문의·신청</p>
+    <h2 id="ct-title">특강을 여는 학원에<br>문의해 주세요</h2>
+    <p id="ct-desc">일취월장 문해력 특강은 학원에서 운영합니다. 수업 일정과 특강비는 안내를 받은 학원에 문의해 주세요.</p>
+    <a class="tel" id="ct-tel" hidden></a>
+    <div class="cta" id="ct-cta" hidden></div>
+  </section>
+</main>
+<footer>매일국어 · 책글섬 독도 · (주)매일국어</footer>
+
+<div class="bar" id="bar" hidden><div class="inner" id="bar-inner"></div></div>
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="크게 보기"><button type="button" aria-label="닫기">×</button><img alt=""></div>
+
+<script src="core.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

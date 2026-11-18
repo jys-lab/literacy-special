@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>학원 전용 링크 만들기 | 일취월장 문해력 특강</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f2a44'/%3E%3Cpath d='M18 46V18h6v22h12v6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{--bg:#f6f3ee;--paper:#fff;--ink:#1f2a44;--sub:#5d6475;--line:#e3dccf;--accent:#e8742a;--accent-dark:#c95c17;--accent-soft:#fdeedf;--err:#c0392b;--ok:#2f7d4a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all}
+  header{background:var(--ink);color:#fff;padding:22px 16px}
+  header .in{max-width:1180px;margin:0 auto}
+  header small{color:#ffc79e;font-weight:700}
+  header h1{margin:4px 0 6px;font-size:24px}
+  header p{margin:0;color:#d6dbe7;font-size:15px}
+  .flow{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+  .flow span{background:rgba(255,255,255,.12);border-radius:999px;padding:3px 12px;font-size:13.5px}
+  .layout{max-width:1180px;margin:0 auto;padding:20px 16px 60px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+  .card h2{font-size:17px;margin:0 0 4px}
+  .card h2 small{font-weight:500;color:var(--sub);font-size:13px}
+  .card > p{margin:0 0 12px;color:var(--sub);font-size:14px}
+  label.f{display:block;font-weight:700;font-size:14.5px;margin:12px 0 5px}
+  label.f .req{color:var(--accent-dark);font-size:12.5px;margin-left:4px}
+  input[type=text],input[type=tel],input[type=url],input[type=number],input[type=date],input[type=time],input.num{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--ink)}
+  input.bad{border-color:var(--err)}
+  .help{font-size:13px;color:var(--sub);margin-top:4px}
+  .msg{font-size:13px;margin-top:4px}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)} .msg.warn{color:var(--accent-dark)}
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  .row .shrink{flex:0 0 auto}
+  .seg{display:flex;flex-wrap:wrap;gap:6px}
+  .seg label{position:relative}
+  .seg input{position:absolute;opacity:0;pointer-events:none}
+  .seg span{display:inline-block;padding:7px 14px;border:1.5px solid var(--line);border-radius:999px;font-size:14.5px;font-weight:600;cursor:pointer;background:#fff;user-select:none}
+  .seg input:checked + span{background:var(--ink);border-color:var(--ink);color:#fff}
+  .seg input:disabled + span{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+  .seg input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+  .srow{border:1px dashed var(--line);border-radius:12px;padding:12px;margin-top:10px}
+  .srow .top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:14px}
+  .srow .sub{font-size:13px;color:var(--sub);margin:10px 0 5px;font-weight:600}
+  button{font-family:inherit}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:0 16px;border-radius:10px;border:0;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-accent{background:var(--accent);color:#fff}
+  .btn-line{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+  .btn-text{background:none;border:0;color:var(--sub);font-size:13.5px;min-height:auto;padding:4px 6px;text-decoration:underline}
+  .btn[disabled]{opacity:.4;cursor:not-allowed}
+  .result{border:2px solid var(--accent)}
+  .result textarea{width:100%;font:13px/1.5 ui-monospace,Consolas,monospace;padding:10px;border:1.5px solid var(--line);border-radius:10px;resize:vertical;min-height:84px;color:var(--ink);background:#fbfaf7}
+  .result .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .notice{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:13.5px;margin-top:12px}
+  .empty-result{color:var(--sub);font-size:14.5px;background:#fbfaf7;border-radius:10px;padding:14px;text-align:center}
+  aside{position:sticky;top:16px}
+  aside h2{font-size:15px;margin:0 0 8px;text-align:center}
+  .phone{width:400px;height:780px;border:12px solid #20242e;border-radius:40px;overflow:hidden;background:#fff;box-shadow:0 12px 30px rgba(0,0,0,.12)}
+  .phone iframe{width:100%;height:100%;border:0;display:block}
+  aside p{font-size:13px;color:var(--sub);text-align:center;margin:8px 0 0}
+  @media (max-width:980px){.layout{grid-template-columns:1fr}aside{display:none}}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <small>원장님 전용 · 일취월장 문해력 특강</small>
+  <h1>학원 전용 링크 만들기</h1>
+  <p>우리 학원 정보를 넣으면, 학부모님께 보낼 특강 안내 링크가 바로 만들어집니다. 입력하지 않은 항목은 학부모 화면에 나오지 않습니다.</p>
+  <div class="flow"><span>① 입력</span><span>② 미리보기</span><span>③ 링크 복사 · 발송</span></div>
+</div></header>
+
+<div class="layout">
+<main>
+  <section class="card">
+    <h2>기존 링크 불러오기 <small>(선택)</small></h2>
+    <p>전에 만든 링크를 붙여 넣으면 입력 내용이 채워집니다. 고친 뒤 새 링크를 다시 보내 주세요.</p>
+    <div class="row"><input type="url" id="load-input" placeholder="이전에 만든 링크 붙여 넣기" aria-label="이전에 만든 링크"><button type="button" class="btn btn-line shrink" id="load-btn">불러오기</button></div>
+    <p class="msg" id="load-msg" role="status"></p>
+  </section>
+
+  <section class="card">
+    <h2>1. 학원 정보</h2>
+    <label class="f" for="f-name">학원명<span class="req">필수</span></label>
+    <input type="text" id="f-name" maxlength="40" autocomplete="organization" placeholder="예: 햇살국어학원">
+    <label class="f" for="f-tel">상담 전화</label>
+    <input type="tel" id="f-tel" maxlength="25" placeholder="예: 02-123-4567">
+    <p class="msg" id="tel-msg"></p>
+    <label class="f" for="f-apply">특강 신청 링크</label>
+    <input type="url" id="f-apply" maxlength="500" placeholder="https://…">
+    <p class="help">매일국어·책글섬 독도 관리자의 <b>홍보 링크</b> 메뉴에서 복사한 주소를 넣으면, 학부모 신청이 관리자 <b>상담 신청 내역</b>에 쌓입니다.</p>
+    <p class="msg" id="apply-msg"></p>
+  </section>
+
+  <section class="card">
+    <h2>2. 운영 기간</h2>
+    <label class="f">운영 주차</label>
+    <div class="seg" id="f-weeks" role="radiogroup" aria-label="운영 주차">
+      <label><input type="radio" name="weeks" value="0" checked><span>선택 안 함</span></label>
+      <label><input type="radio" name="weeks" value="4"><span>4주</span></label>
+      <label><input type="radio" name="weeks" value="6"><span>6주</span></label>
+      <label><input type="radio" name="weeks" value="8"><span>8주</span></label>
+    </div>
+    <p class="help" id="weeks-help">8주는 학부모 화면에 '새 학년 1학기 전반부 36회차 완주 목표'가 함께 나옵니다.</p>
+    <div id="sessions-box" hidden>
+      <label class="f" for="f-sessions">매일국어 학습 회차</label>
+      <input type="number" id="f-sessions" min="1" max="99" inputmode="numeric">
+      <p class="help">권장값이 채워져 있습니다. 학원 운영에 맞게 고치세요. 비우면 회차를 표시하지 않습니다.</p>
+    </div>
+    <div class="row">
+      <div><label class="f" for="f-start">시작일</label><input type="date" id="f-start"></div>
+      <div><label class="f" for="f-end">종료일</label><input type="date" id="f-end"></div>
+    </div>
+    <p class="msg" id="date-msg"></p>
+  </section>
+
+  <section class="card">
+    <h2>3. 학년별 수업 일정</h2>
+    <p>같은 요일·시간에 수업하는 학년은 한 줄에 함께 고르세요. 학년과 요일(또는 시간)을 넣은 줄만 학부모 화면에 나옵니다.</p>
+    <div id="rows"></div>
+    <button type="button" class="btn btn-line" id="add-row" style="margin-top:10px">+ 줄 추가</button>
+  </section>
+
+  <section class="card">
+    <h2>4. 특강비</h2>
+    <p>학부모님께 안내할 특강비입니다. 비우면 학부모 화면에 나오지 않습니다.</p>
+    <label class="f" for="f-fee">금액(원)</label>
+    <input type="text" id="f-fee" class="num" inputmode="numeric" placeholder="예: 300,000">
+    <label class="f">기준</label>
+    <div class="seg" role="radiogroup" aria-label="특강비 기준">
+      <label><input type="radio" name="basis" value="0" checked><span>전체 과정</span></label>
+      <label><input type="radio" name="basis" value="1"><span>월</span></label>
+    </div>
+    <label class="f" for="f-memo">비고 <small style="font-weight:400;color:var(--sub)">(30자)</small></label>
+    <input type="text" id="f-memo" maxlength="30" placeholder="예: 교재비 별도">
+    <p class="msg" id="fee-msg"></p>
+  </section>
+
+  <section class="card result">
+    <h2>5. 링크 복사</h2>
+    <div class="empty-result" id="no-link">학원명을 입력하면 링크가 만들어집니다.</div>
+    <div id="has-link" hidden>
+      <textarea id="out-link" readonly aria-label="학원 전용 링크"></textarea>
+      <div class="btns">
+        <button type="button" class="btn btn-accent" id="copy-link">링크 복사</button>
+        <button type="button" class="btn btn-dark" id="copy-text">안내 문구 복사</button>
+        <a class="btn btn-line" id="open-preview" target="_blank" rel="noopener">미리보기(새 창)</a>
+      </div>
+      <p class="msg ok" id="copy-msg" role="status"></p>
+      <div class="notice"><b>수정하면 새 링크가 만들어집니다.</b> 이미 보낸 링크는 자동으로 바뀌지 않으니, 내용을 고친 뒤에는 새 링크를 다시 보내 주세요. 만든 링크는 나중에 고칠 수 있게 보관해 두세요.</div>
+    </div>
+  </section>
+</main>
+
+<aside aria-label="학부모 화면 미리보기">
+  <h2>학부모 화면 미리보기</h2>
+  <div class="phone"><iframe id="preview" title="학부모 화면 미리보기" src="index.html"></iframe></div>
+  <p>입력하면 바로 바뀝니다.</p>
+</aside>
+</div>
+
+<script src="core.js"></script>
+<script src="maker.js"></script>
+</body>
+</html>
