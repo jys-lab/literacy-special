@@ -72,6 +72,26 @@ h2{font-size:26px;line-height:1.35;letter-spacing:-.01em;margin-bottom:12px}
 .times td{padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 .times td:first-child{font-weight:700}
 
+/* 반 목록 */
+.classes{margin-top:16px}
+.cl-head{font-size:13px;font-weight:700;color:var(--sub);padding-bottom:6px;border-bottom:1.5px solid var(--ink)}
+.classes ul{list-style:none;padding:0;margin:0}
+.classes li{padding:11px 2px;border-bottom:1px solid var(--line)}
+.cl-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.cl-grade{font-weight:800;font-size:15.5px}
+.cl-name{font-size:13px;font-weight:700;background:var(--navy-soft);border-radius:6px;padding:1px 8px}
+.cl-freq{font-size:13px;font-weight:700;color:#fff;background:var(--accent);border-radius:6px;padding:1px 8px}
+.cl-time{font-size:15px;color:var(--ink);margin-top:3px}
+
+/* 상담 신청 안내 창 */
+.sheet-bg{position:fixed;inset:0;background:rgba(15,20,32,.55);z-index:45;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:24px 20px calc(20px + env(safe-area-inset-bottom));display:grid;gap:10px;box-shadow:0 -6px 24px rgba(0,0,0,.18)}
+.sheet-step{font-size:13px;font-weight:700;color:var(--accent-dark)}
+.sheet h3{font-size:20px;line-height:1.4}
+.sheet-steps{margin:4px 0 8px;padding-left:20px;display:grid;gap:6px;font-size:15.5px}
+.sheet-steps b{color:var(--accent-dark)}
+.sheet .btn{flex:none}
+
 /* 단계 */
 .steps{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
 .steps li{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:30px 1fr;gap:2px 10px}

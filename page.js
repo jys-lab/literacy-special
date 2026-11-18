@@ -148,15 +148,18 @@
     addInfo('특강비', demo ? '○○○,○○○원 (전체 과정)' : K.feeText(d), d.f ? d.m : '');
     var rows = K.visibleRows(d);
     if (rows.length) {
-      var tbody = $('sch-times').querySelector('tbody');
+      var list = $('sch-list');
       rows.forEach(function (r) {
-        var tr = document.createElement('tr');
-        tr.appendChild(el('td', K.gradeText(r[0])));
-        tr.appendChild(el('td', K.dayText(r[1]) || '-'));
-        tr.appendChild(el('td', K.timeText(r[2], r[3]) || '-'));
-        tbody.appendChild(tr);
+        var li = document.createElement('li');
+        var top = el('div', '', 'cl-top');
+        top.appendChild(el('span', K.gradeText(r[0]), 'cl-grade'));
+        if (r[4]) top.appendChild(el('span', r[4], 'cl-name'));
+        if (r[1].length) top.appendChild(el('span', K.perWeekText(r[1]), 'cl-freq'));
+        li.appendChild(top);
+        li.appendChild(el('div', [K.dayText(r[1]), K.timeText(r[2], r[3])].filter(Boolean).join(' · '), 'cl-time'));
+        list.appendChild(li);
       });
-      $('sch-times').hidden = false;
+      $('sch-classes').hidden = false;
     }
     $('schedule').hidden = false;
   }
@@ -178,22 +181,27 @@
     if (demo) a.addEventListener('click', function (ev) { ev.preventDefault(); toast('예시 화면이라 전화가 연결되지 않습니다.'); });
     return a;
   }
+  /* 상담 신청: 바로 넘기지 않고, 이동한 페이지에서 한 번 더 신청해야 함을 먼저 안내 */
+  var sheet = $('sheet');
+  $('sheet-acad').textContent = d.n;
+  var go = $('sheet-go');
+  if (demo && !d.a) {
+    go.href = '#';
+    go.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = true; toast('실제 링크에서는 학원의 상담 신청 화면으로 이동합니다.'); });
+  } else {
+    go.href = d.a;
+    go.addEventListener('click', function () { sheet.hidden = true; });
+  }
+  $('sheet-close').addEventListener('click', function () { sheet.hidden = true; });
+  sheet.addEventListener('click', function (ev) { if (ev.target === sheet) sheet.hidden = true; });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') sheet.hidden = true; });
   function applyBtn(cls) {
-    var a = el('a', '특강 신청하기', 'btn ' + cls);
-    a.href = d.a;
-    a.target = '_blank';
-    a.rel = 'noopener';
+    var a = el('a', '상담 신청하기', 'btn ' + cls);
+    a.href = '#';
+    a.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = false; go.focus(); });
     return a;
   }
   var canApply = !!d.a || demo;
-  if (demo && !d.a) {
-    applyBtn = function (cls) {
-      var a = el('a', '특강 신청하기', 'btn ' + cls);
-      a.href = '#';
-      a.addEventListener('click', function (ev) { ev.preventDefault(); toast('실제 링크에서는 학원의 상담 신청 화면으로 이동합니다.'); });
-      return a;
-    };
-  }
   if (tel) {
     var telLink = $('ct-tel');
     telLink.textContent = d.t;

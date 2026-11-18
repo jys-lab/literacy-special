@@ -3,7 +3,7 @@
   'use strict';
   var K = window.ILJWI;
   var $ = function (id) { return document.getElementById(id); };
-  var MAX_ROWS = 4;
+  var MAX_ROWS = K.MAX_CLASSES;
   var rowsBox = $('rows');
   var rowSeq = 0;
 
@@ -33,7 +33,14 @@
     top.appendChild(del);
     row.appendChild(top);
 
-    var gl = document.createElement('div'); gl.className = 'sub'; gl.textContent = '학년'; row.appendChild(gl);
+    var nl = document.createElement('div'); nl.className = 'sub'; nl.textContent = '반 이름 (선택)'; row.appendChild(nl);
+    var nameIn = document.createElement('input');
+    nameIn.type = 'text'; nameIn.className = 'cn'; nameIn.maxLength = 15;
+    nameIn.placeholder = '예: A반, 주 3일반';
+    nameIn.setAttribute('aria-label', '반 이름');
+    row.appendChild(nameIn);
+
+    var gl = document.createElement('div'); gl.className = 'sub'; gl.textContent = '대상 학년'; row.appendChild(gl);
     var grades = document.createElement('div'); grades.className = 'seg g';
     K.GRADES.forEach(function (g) { grades.appendChild(chip('checkbox', 'g' + rowSeq, g, '예비 초' + g)); });
     row.appendChild(grades);
@@ -56,6 +63,7 @@
       data[1].forEach(function (i) { var c = days.querySelector('input[value="' + i + '"]'); if (c) c.checked = true; });
       start.value = data[2] || '';
       end.value = data[3] || '';
+      nameIn.value = data[4] || '';
     }
     row.addEventListener('input', update);
     row.addEventListener('change', update);
@@ -65,7 +73,7 @@
 
   function renumber() {
     Array.prototype.forEach.call(rowsBox.children, function (row, i) {
-      row.querySelector('.top span').textContent = (i + 1) + '번째 줄';
+      row.querySelector('.top span').textContent = (i + 1) + '번째 반';
     });
     $('add-row').hidden = rowsBox.children.length >= MAX_ROWS;
   }
@@ -76,20 +84,7 @@
         return Array.prototype.filter.call(row.querySelectorAll(sel + ' input'), function (c) { return c.checked; })
           .map(function (c) { return Number(c.value); });
       };
-      return [pick('.g'), pick('.d'), row.querySelector('.ts').value, row.querySelector('.te').value];
-    });
-  }
-
-  /* 한 학년은 한 줄에만 */
-  function lockGrades() {
-    var rows = Array.prototype.slice.call(rowsBox.children);
-    rows.forEach(function (row) {
-      row.querySelectorAll('.g input').forEach(function (c) {
-        var takenElsewhere = rows.some(function (other) {
-          return other !== row && other.querySelector('.g input[value="' + c.value + '"]').checked;
-        });
-        c.disabled = takenElsewhere && !c.checked;
-      });
+      return [pick('.g'), pick('.d'), row.querySelector('.ts').value, row.querySelector('.te').value, row.querySelector('.cn').value];
     });
   }
 
@@ -142,7 +137,7 @@
       var r = raw.r[i];
       var msg = row.querySelector('.msg');
       if (r[0].length && !r[1].length && !r[2]) msg.textContent = '요일이나 시간을 넣어야 학부모 화면에 나옵니다.';
-      else if (!r[0].length && (r[1].length || r[2])) msg.textContent = '학년을 골라야 학부모 화면에 나옵니다.';
+      else if (!r[0].length && (r[1].length || r[2] || r[4].trim())) msg.textContent = '대상 학년을 골라야 학부모 화면에 나옵니다.';
       else if (r[2] && r[3] && r[3] <= r[2]) msg.textContent = '끝나는 시간이 시작 시간보다 앞입니다.';
       else msg.textContent = '';
     });
@@ -164,7 +159,6 @@
   }
 
   function update() {
-    lockGrades();
     var w = radio('weeks');
     $('sessions-box').hidden = !(w === 4 || w === 6);
     var raw = readForm();

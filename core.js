@@ -8,6 +8,7 @@
   var DAYS = ['월', '화', '수', '목', '금', '토'];
   var WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   var RECOMMENDED_SESSIONS = { 4: 18, 6: 27 };
+  var MAX_CLASSES = 6;
 
   /* 입력 예시(원장님 공지용). 학원명·연락처·금액은 모두 가상 값 */
   var SAMPLE = {
@@ -18,7 +19,11 @@
     c: 0,
     s: '2027-01-04',
     e: '2027-02-26',
-    r: [[[3, 4], [0, 2], '16:00', '17:20'], [[5, 6], [1, 3], '17:30', '18:50']],
+    r: [
+      [[3, 4], [0, 2], '16:00', '17:20', 'A반'],
+      [[3, 4], [1, 3], '16:00', '17:20', 'B반'],
+      [[5, 6], [0, 2, 4], '17:30', '18:50', '주 3일반']
+    ],
     f: 300000,
     b: 0,
     m: '교재비 별도'
@@ -79,17 +84,17 @@
     if ((d.w === 4 || d.w === 6) && Number.isInteger(raw.c) && raw.c > 0 && raw.c < 100) d.c = raw.c;
     if (d.s && d.e && d.e < d.s) { d.s = ''; d.e = ''; }
     if (Number.isInteger(raw.f) && raw.f > 0 && raw.f < 100000000) d.f = raw.f;
-    var used = [];
-    (Array.isArray(raw.r) ? raw.r : []).slice(0, 4).forEach(function (row) {
+    /* 한 줄 = 한 반. 같은 학년이 여러 반에 들어갈 수 있음 */
+    (Array.isArray(raw.r) ? raw.r : []).slice(0, MAX_CLASSES).forEach(function (row) {
       if (!Array.isArray(row)) return;
-      var grades = uniqueSorted(row[0], GRADES).filter(function (g) { return used.indexOf(g) === -1; });
+      var grades = uniqueSorted(row[0], GRADES);
       var days = uniqueSorted(row[1], [0, 1, 2, 3, 4, 5]);
       var start = validTime(row[2]);
       var end = validTime(row[3]);
+      var name = str(row[4], 15);
       if (start && end && end <= start) end = '';
       if (!grades.length) return;
-      used = used.concat(grades);
-      d.r.push([grades, days, start, end]);
+      d.r.push(name ? [grades, days, start, end, name] : [grades, days, start, end]);
     });
     return d;
   }
@@ -167,9 +172,17 @@
     return '';
   }
 
-  /* 학년별 일정 중 표시할 줄: 학년 + (요일 또는 시간) */
+  /* 표시할 반: 학년 + (요일 또는 시간). 낮은 학년 반부터, 같은 학년은 입력 순서대로 */
   function visibleRows(d) {
-    return d.r.filter(function (row) { return row[0].length && (row[1].length || row[2]); });
+    return d.r
+      .map(function (row, i) { return { row: row, i: i }; })
+      .filter(function (x) { return x.row[0].length && (x.row[1].length || x.row[2]); })
+      .sort(function (a, b) { return (a.row[0][0] - b.row[0][0]) || (a.i - b.i); })
+      .map(function (x) { return x.row; });
+  }
+
+  function perWeekText(days) {
+    return days.length ? '주 ' + days.length + '회' : '';
   }
 
   function hasSchedule(d) {
@@ -178,6 +191,7 @@
 
   window.ILJWI = {
     GRADES: GRADES, DAYS: DAYS, SAMPLE: SAMPLE, RECOMMENDED_SESSIONS: RECOMMENDED_SESSIONS,
+    MAX_CLASSES: MAX_CLASSES, perWeekText: perWeekText,
     phoneNumber: phoneNumber, safeUrl: safeUrl, sanitize: sanitize,
     encode: encode, decode: decode,
     periodText: periodText, gradeText: gradeText, dayText: dayText, timeText: timeText,
