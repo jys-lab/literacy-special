@@ -184,13 +184,14 @@
   /* 상담 신청: 바로 넘기지 않고, 이동한 페이지에서 한 번 더 신청해야 함을 먼저 안내 */
   var sheet = $('sheet');
   $('sheet-acad').textContent = d.n;
-  var go = $('sheet-go');
+  /* 이름 주의: 'go'는 화면 넘기기 함수 이름이라 겹치면 넘기기가 멈춤 */
+  var sheetGo = $('sheet-go');
   if (demo && !d.a) {
-    go.href = '#';
-    go.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = true; toast('실제 링크에서는 학원의 상담 신청 화면으로 이동합니다.'); });
+    sheetGo.href = '#';
+    sheetGo.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = true; toast('실제 링크에서는 학원의 상담 신청 화면으로 이동합니다.'); });
   } else {
-    go.href = d.a;
-    go.addEventListener('click', function () { sheet.hidden = true; });
+    sheetGo.href = d.a;
+    sheetGo.addEventListener('click', function () { sheet.hidden = true; });
   }
   $('sheet-close').addEventListener('click', function () { sheet.hidden = true; });
   sheet.addEventListener('click', function (ev) { if (ev.target === sheet) sheet.hidden = true; });
@@ -198,7 +199,7 @@
   function applyBtn(cls) {
     var a = el('a', '상담 신청하기', 'btn ' + cls);
     a.href = '#';
-    a.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = false; go.focus(); });
+    a.addEventListener('click', function (ev) { ev.preventDefault(); sheet.hidden = false; sheetGo.focus(); });
     return a;
   }
   var canApply = !!d.a || demo;
