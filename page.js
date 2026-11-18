@@ -111,7 +111,7 @@
   /* ---------- 학원 정보 ---------- */
   var params = new URLSearchParams(location.search);
   var demo = params.get('demo') === '1';
-  var d = demo ? K.sanitize(K.SAMPLE) : (params.get('d') ? K.decode(params.get('d')) : null);
+  var d = demo ? K.sanitize(K.SAMPLE) : K.fromSearch(location.search);
   if (!d) return; /* 본사 기본 안내 그대로 */
 
   function el(tag, text, cls) {

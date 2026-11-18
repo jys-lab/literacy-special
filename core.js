@@ -114,24 +114,83 @@
     return o;
   }
 
-  function encode(data) {
-    var json = JSON.stringify(compact(sanitize(data)));
-    var bytes = new TextEncoder().encode(json);
+  function toB64(str) {
+    var bytes = new TextEncoder().encode(str);
     var bin = '';
     bytes.forEach(function (b) { bin += String.fromCharCode(b); });
     return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
+  function fromB64(code) {
+    var b64 = String(code).replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
 
-  function decode(code) {
+  /* ---------- 짧은 링크 형식 (?c=) ----------
+     JSON 대신 구분자로 이어 붙이고, 날짜·시간·요일을 숫자로 줄이고,
+     자주 쓰는 홍보 링크 주소는 기호 한 글자로 바꾼다. 압축 기능은 쓰지 않아 모든 휴대폰에서 열림. */
+  var SEP = '|', ROW = '~', COL = '^';
+  var URL_SHORT = [['\u0001', 'https://dailykor.com/promo?aid='], ['\u0002', 'https://miribook.kr/promo/'], ['\u0003', 'https://']];
+  function clean(s) { return String(s || '').replace(/[|~^\u0000-\u001f]/g, ' ').trim(); }
+  function shortUrl(u) {
+    for (var i = 0; i < URL_SHORT.length; i++) if (u.indexOf(URL_SHORT[i][1]) === 0) return URL_SHORT[i][0] + u.slice(URL_SHORT[i][1].length);
+    return u;
+  }
+  function longUrl(u) {
+    for (var i = 0; i < URL_SHORT.length; i++) if (u.charAt(0) === URL_SHORT[i][0]) return URL_SHORT[i][1] + u.slice(1);
+    return u;
+  }
+  function packDate(v) { return v ? v.replace(/-/g, '').slice(2) : ''; }          /* 2027-01-11 → 270111 */
+  function unpackDate(v) { return /^\d{6}$/.test(v) ? '20' + v.slice(0, 2) + '-' + v.slice(2, 4) + '-' + v.slice(4) : ''; }
+  function packTime(v) { return v ? v.replace(':', '') : ''; }                    /* 15:00 → 1500 */
+  function unpackTime(v) { return /^\d{4}$/.test(v) ? v.slice(0, 2) + ':' + v.slice(2) : ''; }
+  function digits(list) { return list.join(''); }                                 /* [0,2,4] → 024 */
+  function undigits(v) { return String(v || '').split('').map(Number); }
+
+  function encode(data) {
+    var d = sanitize(data);
+    var rows = d.r.map(function (r) {
+      return [digits(r[0]), digits(r[1]), packTime(r[2]), packTime(r[3]), clean(r[4])].join(COL).replace(/\^+$/, '');
+    }).join(ROW);
+    var parts = [clean(d.n), d.t, d.a ? shortUrl(d.a.replace(/\|/g, '%7C')) : '', d.w || '', packDate(d.s), packDate(d.e), rows,
+      d.f || '', d.f && d.b ? 1 : '', clean(d.m)];
+    return toB64(parts.join(SEP).replace(/\|+$/, ''));
+  }
+
+  function decodePacked(code) {
+    var p = fromB64(code).split(SEP);
+    var rows = (p[6] || '') ? p[6].split(ROW).map(function (x) {
+      var c = x.split(COL);
+      return [undigits(c[0]), undigits(c[1]), unpackTime(c[2] || ''), unpackTime(c[3] || ''), c[4] || ''];
+    }) : [];
+    return sanitize({
+      n: p[0], t: p[1], a: p[2] ? longUrl(p[2]) : '', w: Number(p[3]) || 0,
+      s: unpackDate(p[4] || ''), e: unpackDate(p[5] || ''), r: rows,
+      f: Number(p[7]) || 0, b: p[8] === '1' ? 1 : 0, m: p[9] || ''
+    });
+  }
+
+  /* 예전 긴 링크(?d=, JSON)도 계속 열리게 */
+  function decodeJson(code) {
+    return sanitize(JSON.parse(fromB64(code)));
+  }
+
+  function decode(code, kind) {
     try {
-      var b64 = String(code).replace(/-/g, '+').replace(/_/g, '/');
-      while (b64.length % 4) b64 += '=';
-      var bin = atob(b64);
-      var bytes = new Uint8Array(bin.length);
-      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      var d = sanitize(JSON.parse(new TextDecoder().decode(bytes)));
+      var d = kind === 'd' ? decodeJson(code) : decodePacked(code);
       return d.n ? d : null;
     } catch (e) { return null; }
+  }
+
+  /* 주소에서 학원 정보 꺼내기: ?c=(짧은 형식) 또는 ?d=(예전 형식) */
+  function fromSearch(search) {
+    var q = new URLSearchParams(search);
+    if (q.get('c')) return decode(q.get('c'), 'c');
+    if (q.get('d')) return decode(q.get('d'), 'd');
+    return null;
   }
 
   /* 화면 표시용 글자 만들기 */
@@ -192,7 +251,7 @@
     GRADES: GRADES, DAYS: DAYS, SAMPLE: SAMPLE, RECOMMENDED_SESSIONS: RECOMMENDED_SESSIONS,
     MAX_CLASSES: MAX_CLASSES, MAX_WEEKS: MAX_WEEKS, perWeekText: perWeekText,
     phoneNumber: phoneNumber, safeUrl: safeUrl, sanitize: sanitize,
-    encode: encode, decode: decode,
+    encode: encode, decode: decode, fromSearch: fromSearch,
     periodText: periodText, gradeText: gradeText, dayText: dayText, timeText: timeText,
     feeText: feeText, sessionsText: sessionsText, visibleRows: visibleRows, hasSchedule: hasSchedule
   };

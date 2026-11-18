@@ -174,8 +174,9 @@
   var currentUrl = '';
   var previewTimer = null;
 
+  /* 'index.html'을 빼서 주소를 짧게: …/literacy-special/?c=… */
   function baseUrl() {
-    var u = new URL('index.html', location.href);
+    var u = new URL('./', location.href);
     u.search = ''; u.hash = '';
     return u.href;
   }
@@ -185,7 +186,7 @@
     var raw = readForm();
     var ok = check(raw);
     var name = raw.n.trim();
-    currentUrl = ok && name ? baseUrl() + '?d=' + K.encode(raw) : '';
+    currentUrl = ok && name ? baseUrl() + '?c=' + K.encode(raw) : '';
     $('no-link').hidden = !!currentUrl;
     $('has-link').hidden = !currentUrl;
     $('no-link').textContent = name ? '빨간 글씨로 표시된 항목을 고치면 링크가 만들어집니다.' : '학원명을 입력하면 링크가 만들어집니다.';
@@ -266,9 +267,8 @@
 
   $('load-btn').addEventListener('click', function () {
     var v = $('load-input').value.trim();
-    var code = v;
-    try { code = new URL(v).searchParams.get('d') || ''; } catch (e) { /* 주소가 아니면 코드 자체로 시도 */ }
-    var d = code ? K.decode(code) : null;
+    var d = null;
+    try { d = K.fromSearch(new URL(v).search); } catch (e) { /* 주소가 아니면 코드 자체로 시도 */ d = v ? (K.decode(v, 'c') || K.decode(v, 'd')) : null; }
     if (!d) { setMsg('load-msg', '링크를 읽지 못했습니다. 이 페이지에서 만든 링크를 그대로 붙여 넣어 주세요.', 'err'); return; }
     fill(d);
     setMsg('load-msg', '불러왔습니다. 고친 뒤 아래에서 새 링크를 복사해 주세요.', 'ok');
