@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8742a'/%3E%3Cpath d='M18 46V18h6v22h12v6z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="style.css?v=20261118c">
+<link rel="stylesheet" href="style.css?v=20261119f">
 </head>
 <body>
 <div class="demo-bar" id="demo-bar" hidden>예시 화면입니다 · 학원 정보는 가상입니다</div>
@@ -31,13 +31,62 @@
     <div class="hero-art" id="hero-art">
       <img src="img/hero.jpg" alt="겨울방학에 책상에서 책을 읽고 글을 쓰는 아이" onerror="this.parentNode.classList.add('empty');this.parentNode.textContent='첫 화면 그림 자리 (ChatGPT 그림 I-1 · 1080×810)';">
     </div>
-    <p class="goals-title">일취월장 문해력 특강의<br><em>목표 3!</em></p>
+    <p class="goals-title">일취월장 문해력 특강의<br><em data-fx="zoom" data-fx-delay="300">목표 3!</em></p>
     <ol class="goals">
       <li><b>교과 독파</b><span>새 학년 국어·사회·과학 1학기 전반부, 미리 읽고 시작!</span></li>
       <li><b>완독 습관</b><span>매주 1권 이상, 끝까지 읽는 힘!</span></li>
       <li><b>글쓰기 기초</b><span>피드백 받고 다시 쓰며 생각을 글로!</span></li>
     </ol>
     <div class="cta" id="hero-cta" hidden></div>
+  </section>
+
+  <!-- A. 교육이 바뀌고 있습니다 -->
+  <section class="block shift" aria-labelledby="sh-title">
+    <p class="label" data-fx="slide">교육이 바뀌고 있습니다</p>
+    <h2 id="sh-title" data-fx="slide" data-fx-delay="150">정답을 고르는 시험에서,<br>생각을 쓰는 시험으로</h2>
+    <p>AI가 몇 초 만에 정답을 찾아 주는 시대입니다. 그래서 평가는 '정답을 아는가'에서 '왜 그렇게 생각하는지 설명할 수 있는가'로 무게를 옮기고 있습니다.</p>
+    <div class="facts">
+      <div><span class="st ok">확정</span><b>고등학교 내신, 서·논술형 평가 확대</b><p>2028학년도 대입 개편(2025년 고1부터): 내신 5등급제, 선택과목 없는 통합형 수능, 학교 서·논술형 평가 확대</p><small>교육부, 2023년 12월 확정</small></div>
+      <div><span class="st go">추진 중</span><b>AI로 서·논술형 답안 채점·피드백</b><p>교육부는 2029년까지 전국 17개 시·도교육청에 서·논술형 답안을 AI로 가채점하고 피드백하는 지원 체계를 갖출 계획입니다.</p><small>교육부 하반기 업무계획, 2026년 8월</small></div>
+      <div><span class="st talk">논의 중</span><b>수능에도 서·논술형이 들어올까?</b><p>국가교육위원회가 '2028~2037 국가교육발전계획'에서 수능 서·논술형 도입과 내신 서·논술형 확대를 논의하고 있습니다. 시안은 연내 발표, 2027년 3월 확정 예정입니다.</p><small>국가교육위원회, 2026년 10월</small></div>
+    </div>
+    <p class="note">※ 논의 중인 내용은 최종 발표에서 달라질 수 있습니다. 출처: 교육부·국가교육위원회 발표 및 관련 보도</p>
+  </section>
+
+  <!-- B. 우리 아이가 만날 시험 -->
+  <section class="block" aria-labelledby="tl-title">
+    <p class="label" data-fx="fade">우리 아이가 만날 시험</p>
+    <h2 id="tl-title" data-fx="fade" data-fx-delay="150">우리 아이의 중·고등학교 6년,<br>바로 이 변화 한가운데에 있습니다</h2>
+    <table class="tl">
+      <thead><tr><th>지금</th><th>중학교 입학</th><th>고등학교 입학</th><th>수능</th></tr></thead>
+      <tbody>
+        <tr><td>예비 초3</td><td>2031년</td><td>2034년</td><td>2036년 11월</td></tr>
+        <tr><td>예비 초4</td><td>2030년</td><td>2033년</td><td>2035년 11월</td></tr>
+        <tr><td>예비 초5</td><td>2029년</td><td>2032년</td><td>2034년 11월</td></tr>
+        <tr><td>예비 초6</td><td>2028년</td><td>2031년</td><td>2033년 11월</td></tr>
+      </tbody>
+    </table>
+    <p>지금 예비 초3~초6 아이들이 중·고등학교를 다니고 수능을 보는 시기는 <b>2028~2037 국가교육발전계획</b>이 적용되는 기간과 겹칩니다.</p>
+    <div class="outlook">
+      <p class="ol-h">앞으로의 흐름 <span>전망</span></p>
+      <p><b>중학교</b> 2022 개정 교육과정은 생각과 풀이 과정을 쓰는 서·논술형 평가 확대를 강조합니다.</p>
+      <p><b>고등학교</b> 고교학점제(2025년 전면 시행)와 내신 서·논술형 확대가 이미 시작됐습니다.</p>
+      <p><b>수능</b> 서·논술형 도입이 결정된다면, 지금의 초등학생들이 그 적용 대상이 될 수 있습니다.</p>
+    </div>
+    <p class="key">어떤 방식으로 정해지든 변하지 않는 것이 있습니다.<br><b>글을 정확히 읽고, 내 생각을 근거와 함께 쓰는 힘</b>입니다.</p>
+  </section>
+
+  <!-- C. 왜 지금, 초등 겨울방학인가 -->
+  <section class="block" aria-labelledby="why-title">
+    <p class="label" data-fx="zoom">왜 지금, 초등 겨울방학인가</p>
+    <h2 id="why-title" data-fx="zoom" data-fx-delay="150">쓰는 힘은 하루아침에<br>생기지 않으니까요</h2>
+    <ol class="why">
+      <li><b>습관은 초등에서</b><span>읽고 요약하고 생각을 쓰는 습관은 짧은 기간에 만들어지지 않습니다. 서·논술형이 본격적으로 늘어나는 중학교 전에 시작해야 여유가 있습니다.</span></li>
+      <li><b>새 학년 바로 앞</b><span>3학년부터 사회·과학이 시작되고, 학년이 오를수록 교과서 글은 길고 어려워집니다. 1학기 전반부를 미리 읽고 시작하면 새 학기가 덜 낯섭니다.</span></li>
+      <li><b>매일 할 시간이 있을 때</b><span>학기 중에는 매일 꾸준히 읽고 쓰기가 쉽지 않습니다. 방학이라면 주 5회 교과 읽기와 주 1권 완독을 이어 갈 수 있습니다.</span></li>
+      <li><b>독서가 강조되는 학년</b><span>교육부는 초3·4학년을 '독서교육 집중 학년'으로 정하는 방안을 발표했습니다. <small>교육부 '학교 독서교육 활성화 방안', 2026년 7월</small></span></li>
+    </ol>
+    <p class="key">그래서 <b>일취월장 문해력 특강</b>은 이번 겨울,<br>교과 독파 · 완독 습관 · 글쓰기 기초를 함께 시작합니다.</p>
   </section>
 
   <!-- 2. 우리 학원 특강 일정 (학원 입력) -->
@@ -118,6 +167,20 @@
     <figure><button type="button" class="shot"><img src="img/dd-compare.jpg" alt="1차 작성글과 2차 작성글을 나란히 보여 주는 화면" loading="lazy"></button><figcaption>실제 화면에서는 1차 글과 2차 글을 나란히 놓고 비교합니다.</figcaption></figure>
   </section>
 
+  <!-- D. 실제 학생 글 -->
+  <section class="block" aria-labelledby="real-title">
+    <p class="label">실제 학생 글</p>
+    <h2 id="real-title">실제 학생 글은<br>이렇게 달라졌어요</h2>
+    <p>「벨루가의 바다」를 읽고 쓴 독서록입니다. 선생님이 1차 글에 '처음-중간-끝 흐름'과 '왜 그렇게 느꼈는지'를 짚어 주자, 2차 글에서 줄거리가 이어지고 "사람들은 동물을 지키려면 어떻게 해야 할지"라는 생각이 더해졌습니다.</p>
+    <div class="tabs real-tabs" role="tablist" aria-label="실제 학생 글">
+      <button class="tab" role="tab" aria-selected="true" data-real="1">1차 글 + 선생님 총평</button>
+      <button class="tab" role="tab" aria-selected="false" data-real="2">2차 글 + 선생님 총평</button>
+    </div>
+    <figure class="real" data-real="1"><button type="button" class="shot"><img src="img/real-1.jpg" alt="벨루가의 바다 독서록 1차 작성 글과 선생님 총평" loading="lazy"></button></figure>
+    <figure class="real" data-real="2" hidden><button type="button" class="shot"><img src="img/real-2.jpg" alt="벨루가의 바다 독서록 2차 작성 글과 선생님 총평" loading="lazy"></button></figure>
+    <p class="note">실제 학생 글(이름 비공개) · 누르면 크게 보입니다</p>
+  </section>
+
   <!-- 6. 독후감 평가 보고서 -->
   <section class="block" aria-labelledby="rp-title">
     <p class="label">독후감 평가 보고서</p>
@@ -129,9 +192,28 @@
     <p class="note">보고서는 아이가 처음 스스로 쓴 글(1차)을 기준으로 만들어집니다.</p>
   </section>
 
+  <!-- 학생 후기 (독도의 날 이벤트) -->
+  <section class="block" aria-labelledby="rv-title">
+    <p class="label" data-fx="slide">학생들의 이야기</p>
+    <h2 id="rv-title" data-fx="slide" data-fx-delay="150">피드백 받고 다시 써 보니,<br>이렇게 말했어요</h2>
+    <p>독후감을 쓰고 선생님 피드백을 받아 고쳐 써 본 학생들의 짧은 후기입니다.</p>
+    <ul class="reviews" id="reviews">
+      <li><p>"처음엔 줄거리 위주로 적었는데, 선생님의 구체적인 피드백을 받고 글을 고쳐 보면서 제가 빼놓았던 인물의 마음과 깨달음을 깊이 고민해 볼 수 있었습니다. 글쓰기에 대한 자신감이 많이 생겼습니다."</p><span>초6 김○○</span></li>
+      <li><p>"피드백을 받아서 더 많은 생각을 하게 되었고, 고쳐 쓰니 글이 더 풍성하게 되었다. 피드백에서 칭찬도 해 주는데 그 말에 힘이 났다."</p><span>초3 김○○</span></li>
+      <li><p>"선생님께서 주신 피드백을 받고 다시 고쳐 보니 변화가 생각보다 커서 놀랐다."</p><span>초5 박○○</span></li>
+      <li><p>"피드백을 받고 글을 고치니 전보다 더 풍부하고 짜임새 있게 글을 쓸 수 있었다. 편지 형식으로 피드백이 오니 더 설레고 재미있다."</p><span>초3 한○○</span></li>
+      <li class="more"><p>"피드백을 받고 글을 고쳐 보니까 내가 뭘 잘못 썼고 어떤 걸 다시 고쳐 써야 하는지 알 수 있어서 좋았습니다."</p><span>초6 이○○</span></li>
+      <li class="more"><p>"1회차보다 2회차가 훨씬 더 길어져서 좋았고, 처음엔 못 할 것 같았는데 성공해서 기분이 좋다."</p><span>초4 오○○</span></li>
+      <li class="more"><p>"피드백을 그냥 보기만 하면 무시할 수도 있지만, 피드백을 보고 글을 고치니 글쓰기 능력이 올라간 것 같다."</p><span>초6 최○○</span></li>
+      <li class="more"><p>"1차로 적은 글보다 더 나은 글을 쓸 수 있게 되어 점점 실력이 올라간 것 같아요!"</p><span>초5 이○○</span></li>
+    </ul>
+    <button type="button" class="btn btn-ghost more-btn" id="more-reviews">후기 더 보기</button>
+    <p class="note">2026년 10월 책글섬 독도 '독도의 날' 이벤트 참여 학생 후기 · 이름은 가리고 맞춤법만 다듬었습니다.</p>
+  </section>
+
   <!-- 목표 요약 -->
   <section class="summary" aria-labelledby="sum-title">
-    <h2 id="sum-title">이번 겨울방학<span id="sum-weeks"></span>,<br>목표는 딱 3가지!</h2>
+    <h2 id="sum-title" data-fx="slide">이번 겨울방학<span id="sum-weeks"></span>,<br>목표는 딱 3가지!</h2>
     <ul>
       <li><b>교과 독파</b> 새 학년 국어·사회·과학 1학기 전반부</li>
       <li><b>완독 습관</b> 매주 1권 이상 끝까지</li>
@@ -166,7 +248,7 @@
 </div>
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="크게 보기"><button type="button" aria-label="닫기">×</button><img alt=""></div>
 
-<script src="core.js?v=20261118c"></script>
-<script src="page.js?v=20261118c"></script>
+<script src="core.js?v=20261119f"></script>
+<script src="page.js?v=20261119f"></script>
 </body>
 </html>

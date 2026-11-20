@@ -48,11 +48,11 @@
     if (e.problems) html += '<div class="problems">' + e.problems.map(function (x) { return '<span>' + x + '</span>'; }).join('') + '</div>';
     html += '<p class="what">' + e.what + '</p>';
     $('essay').innerHTML = html; /* 고정 문구만 넣음(학원 입력값 아님) */
-    document.querySelectorAll('.tab').forEach(function (t) {
+    document.querySelectorAll('.tab[data-step]').forEach(function (t) {
       t.setAttribute('aria-selected', String(Number(t.dataset.step) === step));
     });
   }
-  document.querySelectorAll('.tab').forEach(function (t) {
+  document.querySelectorAll('.tab[data-step]').forEach(function (t) {
     t.addEventListener('click', function () { renderEssay(Number(t.dataset.step)); });
   });
   renderEssay(0);
@@ -94,6 +94,121 @@
   car.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('resize', sync);
   sync();
+
+  /* ---------- 탭 자동 전환 (4초) + 이전/다음 버튼 ----------
+     화면에 보일 때만 넘어가고, 직접 누르면 그 탭부터 다시 4초를 셈 */
+  function autoTabs(tabs, area, label, pinEls) {
+    tabs = Array.prototype.slice.call(tabs);
+    if (tabs.length < 2 || !area) return;
+    var AUTO = 4000, timer = null, visible = false, pinned = false;
+    /* 내용 아래: 렌즈 모양 시간 바 + 이전/다음 버튼 줄 */
+    var tbar = document.createElement('div');
+    tbar.className = 'tbar';
+    tbar.setAttribute('aria-hidden', 'true');
+    tbar.innerHTML = '<i></i>';
+    var bar = document.createElement('div');
+    bar.className = 'stepper';
+    bar.innerHTML = '<button type="button" class="sp-prev" aria-label="' + label + ' 이전">‹ 이전</button>' +
+      '<span class="mid"><span class="count"><b class="sp-now">1</b> / ' + tabs.length + '</span>' +
+      '<button type="button" class="sp-play" aria-label="' + label + ' 자동 넘김">멈추기</button></span>' +
+      '<button type="button" class="sp-next" aria-label="' + label + ' 다음">다음 ›</button>';
+    area.parentNode.insertBefore(bar, area.nextSibling);
+    area.parentNode.insertBefore(tbar, bar);
+    var play = bar.querySelector('.sp-play');
+    function cur() {
+      for (var i = 0; i < tabs.length; i++) if (tabs[i].getAttribute('aria-selected') === 'true') return i;
+      return 0;
+    }
+    function schedule() {
+      clearTimeout(timer);
+      tbar.classList.remove('run');
+      bar.querySelector('.sp-now').textContent = cur() + 1;
+      play.textContent = pinned ? '▶ 고정됨 · 자동 넘김 켜기' : '❚❚ 멈추기';
+      play.classList.toggle('pinned', pinned);
+      if (!visible || pinned) return;
+      void tbar.offsetWidth; /* 시간 바를 처음부터 다시 */
+      tbar.style.setProperty('--auto', AUTO + 'ms');
+      tbar.classList.add('run');
+      timer = setTimeout(function () { tabs[(cur() + 1) % tabs.length].click(); }, AUTO);
+    }
+    function pin(on) { pinned = on; schedule(); }
+    tabs.forEach(function (t) { t.addEventListener('click', function () { setTimeout(schedule, 0); }); });
+    bar.querySelector('.sp-prev').addEventListener('click', function () { tabs[(cur() - 1 + tabs.length) % tabs.length].click(); });
+    bar.querySelector('.sp-next').addEventListener('click', function () { tabs[(cur() + 1) % tabs.length].click(); });
+    play.addEventListener('click', function () { pin(!pinned); });
+    /* 내용을 누르면 그 화면에 고정 */
+    (pinEls || [area]).forEach(function (el) {
+      el.classList.add('pin-area');
+      el.addEventListener('click', function () { if (!pinned) pin(true); });
+    });
+    /* 탭 줄이나 이전/다음 줄 중 하나라도 화면에 보이면 '보는 중'으로 봄 */
+    if ('IntersectionObserver' in window) {
+      var seen = new Set();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); });
+        var now = seen.size > 0;
+        if (now !== visible) { visible = now; schedule(); }
+      }, { threshold: 0.6 });
+      io.observe(tabs[0].parentNode);
+      io.observe(bar);
+    } else { visible = true; schedule(); }
+  }
+  autoTabs(document.querySelectorAll('.tab[data-step]'), $('essay'), '독후감 예시');
+  autoTabs(document.querySelectorAll('.real-tabs .tab'), document.querySelector('figure.real[data-real="2"]'), '실제 학생 글',
+    Array.prototype.slice.call(document.querySelectorAll('figure.real')));
+
+  /* ---------- 학생 후기 더 보기 ---------- */
+  var moreBtn = $('more-reviews');
+  if (moreBtn) moreBtn.addEventListener('click', function () {
+    var list = $('reviews');
+    var open = list.classList.toggle('open');
+    moreBtn.textContent = open ? '후기 접기' : '후기 더 보기';
+  });
+
+  /* ---------- 일부 타이틀 등장 효과 ----------
+     화면에 들어올 때 한 번 재생. 효과가 멈추는 환경에 대비해 1.6초 뒤엔 무조건 보이게 함 */
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.tl tbody tr').forEach(function (tr, i) {
+      tr.setAttribute('data-fx', 'up');
+      tr.setAttribute('data-fx-delay', String(250 + i * 120));
+    });
+    var items = document.querySelectorAll('[data-fx]');
+    if (reduce || !items.length) return;
+    function play(el) {
+      var delay = Number(el.getAttribute('data-fx-delay')) || 0;
+      el.style.animationDelay = delay + 'ms';
+      el.classList.add('fx-in');
+      /* 등장이 끝나면(효과가 멈추는 환경에서도 1.6초 뒤) 보이게 고정하고, 제목은 2초 반복 움직임으로 */
+      setTimeout(function () {
+        el.style.animationDelay = '0ms';
+        el.classList.add('fx-done');
+        if (el.getAttribute('data-fx') !== 'up') el.classList.add('fx-loop');
+      }, 1600 + delay);
+    }
+    if (!('IntersectionObserver' in window)) return; /* 지원하지 않으면 효과 없이 그대로 보임 */
+    document.documentElement.classList.add('fx-on');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var el = en.target;
+        if (!el.classList.contains('fx-in')) {
+          if (en.isIntersecting) play(el);
+          else el.classList.add('fx-wait'); /* 화면 아래 → 보일 때까지 숨겨 둠 */
+        }
+        el.classList.toggle('fx-pause', !en.isIntersecting); /* 화면 밖에선 반복 멈춤 */
+      });
+    }, { threshold: 0.25 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---------- 실제 학생 글 1차/2차 바꿔 보기 ---------- */
+  document.querySelectorAll('.real-tabs .tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      var n = t.getAttribute('data-real');
+      document.querySelectorAll('.real-tabs .tab').forEach(function (x) { x.setAttribute('aria-selected', String(x === t)); });
+      document.querySelectorAll('figure.real').forEach(function (f) { f.hidden = f.getAttribute('data-real') !== n; });
+    });
+  });
 
   /* ---------- 크게 보기 ---------- */
   var lb = $('lightbox');

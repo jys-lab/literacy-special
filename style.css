@@ -52,7 +52,9 @@ h1,h2,h3,p{margin:0}
 
 /* 섹션 공통 */
 section.block{padding:40px 0;border-top:1px solid var(--line)}
-.label{font-size:13px;font-weight:700;color:var(--accent-dark);letter-spacing:.02em;margin-bottom:8px}
+/* 섹션 타이틀(라벨): 눈에 띄게 알약 모양으로 */
+.label{display:inline-block;font-size:15px;font-weight:800;color:var(--accent-dark);background:var(--accent-soft);border-radius:999px;padding:5px 14px;letter-spacing:-.01em;margin-bottom:12px}
+.shift .label,.contact .label{background:rgba(255,199,158,.16)}
 h2{font-size:26px;line-height:1.35;letter-spacing:-.01em;margin-bottom:12px}
 .block > p, .block .desc{color:var(--sub)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 4px}
@@ -71,6 +73,89 @@ h2{font-size:26px;line-height:1.35;letter-spacing:-.01em;margin-bottom:12px}
 .times th{font-size:13px;color:var(--sub);font-weight:600;text-align:left;padding:6px 4px;border-bottom:1.5px solid var(--ink)}
 .times td{padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 .times td:first-child{font-weight:700}
+
+/* 교육 변화·전망·왜 지금 */
+.shift{background:var(--ink);color:#fff;margin:0 -16px;padding:40px 16px!important;border-top:0!important}
+.shift .label{color:#ffc79e}
+.shift h2{color:#fff}
+.shift > p{color:#cfd6e6}
+.shift .note{color:#aeb8cf}
+.facts{display:grid;gap:10px;margin-top:18px}
+.facts div{background:#fff;color:var(--ink);border-radius:14px;padding:14px 16px}
+.facts b{display:block;font-size:16.5px;margin:6px 0 4px}
+.facts p{font-size:14.5px;color:var(--sub)}
+.facts small{display:block;font-size:12.5px;color:#8a90a0;margin-top:6px}
+.st{display:inline-block;font-size:12px;font-weight:800;border-radius:5px;padding:2px 8px}
+.st.ok{background:#1f6f3f;color:#fff}.st.go{background:#2f6fb0;color:#fff}.st.talk{background:#fff;color:var(--accent-dark);border:1.5px solid var(--accent)}
+.tl{width:100%;border-collapse:collapse;margin:16px 0 12px;font-size:14.5px;background:var(--paper);border-radius:12px;overflow:hidden}
+.tl th{background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;padding:8px 6px;text-align:center}
+.tl td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:center}
+.tl td:first-child{font-weight:800}
+.tl td:last-child{color:var(--accent-dark);font-weight:700}
+.outlook{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:14px}
+.outlook p{font-size:14.5px;color:var(--sub);margin-top:6px}
+.outlook p b{color:var(--ink);margin-right:6px}
+.outlook .ol-h{font-weight:800;color:var(--ink);font-size:15px;margin:0}
+.outlook .ol-h span{font-size:12px;font-weight:700;color:var(--accent-dark);border:1px solid var(--accent);border-radius:5px;padding:1px 6px;margin-left:4px}
+.key{margin-top:16px;font-size:16.5px;line-height:1.6;background:var(--accent-soft);border-radius:12px;padding:14px 16px;color:var(--ink)}
+.key b{color:var(--accent-dark)}
+.why{list-style:none;counter-reset:w;padding:0;margin:16px 0 0;display:grid;gap:10px}
+.why li{counter-increment:w;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px 14px 56px;position:relative}
+.why li::before{content:counter(w);position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.why b{display:block;font-size:16.5px;margin-bottom:3px}
+.why span{font-size:14.5px;color:var(--sub)}
+.why small{display:block;font-size:12.5px;color:#8a90a0;margin-top:4px}
+.real-tabs{grid-template-columns:1fr 1fr}
+.real .shot{max-height:640px;overflow:hidden;position:relative}
+.real .shot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(transparent,#fff)}
+
+/* 탭 자동 전환: 내용 아래 렌즈 모양 시간 바(양 끝 얇고 가운데 두꺼움)가 4초 동안 참 */
+.tbar{height:6px;margin:12px 6px 0;background:#e9e1d3;clip-path:ellipse(50% 50% at 50% 50%);position:relative;overflow:hidden}
+.tbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#f3a065,var(--accent) 60%,var(--accent-dark))}
+.tbar.run i{animation:tbarFill var(--auto,4s) linear forwards}
+.tbar.hold i{animation-play-state:paused}
+@keyframes tbarFill{from{width:0}to{width:100%}}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.stepper button{font-family:inherit;font-size:14.5px;font-weight:700;min-height:42px;padding:0 16px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.stepper .mid{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stepper .count{font-size:14px;font-weight:700;color:var(--sub)}
+.stepper .count b{color:var(--accent-dark)}
+.stepper .sp-play{min-height:auto;padding:2px 10px;border:0;background:none;font-size:12.5px;color:var(--sub);text-decoration:underline}
+.stepper .sp-play.pinned{color:var(--accent-dark)}
+.pin-area{cursor:pointer}
+
+/* 학생 후기 */
+.reviews{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px}
+.reviews li{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;position:relative}
+.reviews li::before{content:"“";position:absolute;top:2px;left:12px;font-size:40px;line-height:1;color:var(--accent);font-family:Georgia,serif}
+.reviews p{font-size:15px;line-height:1.7;padding-left:18px}
+.reviews span{display:block;text-align:right;font-size:13px;font-weight:700;color:var(--sub);margin-top:6px}
+.reviews li.more{display:none}
+.reviews.open li.more{display:block}
+.more-btn{width:100%;margin-top:10px}
+
+/* 등장 효과: 일부 중요한 타이틀만. JS가 html에 fx-on을 붙였을 때만 숨겼다가 보이면 재생 */
+.goals-title em{display:inline-block}
+/* 아직 화면 아래에 있는 것만 숨겨 둠(감지가 안 되는 환경에서는 숨기지 않아 늘 보임) */
+.fx-wait[data-fx]:not(.fx-in){opacity:0}
+.fx-in[data-fx="slide"]{animation:fxSlidePop .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:left center}
+.fx-in[data-fx="fade"]{animation:fxFade .9s ease-out both}
+.fx-in[data-fx="zoom"]{animation:fxZoom .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left center}
+.fx-in[data-fx="up"]{animation:fxUp .6s ease-out both}
+.fx-done[data-fx]{animation:none;opacity:1;transform:none;filter:none}
+/* 등장 뒤에는 글자가 보이는 채로 같은 느낌의 움직임을 2초마다 반복 */
+.fx-loop[data-fx="slide"]{animation:fxSlideLoop 2s ease-in-out infinite;transform-origin:left center}
+.fx-loop[data-fx="fade"]{animation:fxFadeLoop 2s ease-in-out infinite}
+.fx-loop[data-fx="zoom"]{animation:fxZoomLoop 2s ease-in-out infinite;transform-origin:left center}
+.fx-pause[data-fx]{animation-play-state:paused}
+@keyframes fxSlideLoop{0%{transform:translateX(0) scale(1)}18%{transform:translateX(-12px) scale(1)}38%{transform:translateX(0) scale(1.06)}52%,100%{transform:translateX(0) scale(1)}}
+@keyframes fxFadeLoop{0%{opacity:1;transform:none}14%{opacity:0;transform:translateY(8px)}42%,100%{opacity:1;transform:none}}
+@keyframes fxZoomLoop{0%,55%,100%{transform:scale(1)}22%{transform:scale(1.09)}38%{transform:scale(.98)}}
+@keyframes fxSlidePop{0%{opacity:0;transform:translateX(-48px)}55%{opacity:1;transform:translateX(0) scale(1)}78%{transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes fxFade{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+@keyframes fxZoom{0%{opacity:0;transform:scale(.6)}65%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes fxUp{0%{opacity:0;transform:translateY(22px)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fx-wait[data-fx]:not(.fx-in){opacity:1}.fx-in[data-fx],.fx-loop[data-fx]{animation:none}}
 
 /* 반 목록 */
 .classes{margin-top:16px}
